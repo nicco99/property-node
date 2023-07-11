@@ -1,7 +1,14 @@
 const knex = require("../db/fixtures/connection");
 const mapProperties = require("../utils/map-properties");
 function list() {
-  return knex("properties").select("*");
+  return knex("landlords").select(
+    "id",
+    "first_name",
+    "last_name",
+    "username",
+    "email",
+    "p_number"
+  );
 }
 
 function create(landlords) {
@@ -12,17 +19,17 @@ function create(landlords) {
 }
 
 function update(updatedLandlord) {
-  return knex("landlord")
+  return knex("landlords")
     .where({ id: updatedLandlord.id })
     .update(updatedLandlord, "*");
 }
 
 function destroy(landlordId) {
-  return knex("landlord").where({ id: landlordId }).del();
+  return knex("landlords").where({ id: landlordId }).del();
 }
 
 function read(landlordId) {
-  return knex("landlord").select("*").where({ id: landlordId }).first();
+  return knex("landlords").select("*").where({ id: landlordId }).first();
 }
 
 module.exports = {

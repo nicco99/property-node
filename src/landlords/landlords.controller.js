@@ -3,8 +3,22 @@ const hasProperties = require("../errors/hasProperties");
 
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
-const VALID_PROPERTIES = ["name", "property_id", "sub_county"];
-const hasRequiredProperties = hasProperties("name", "county", "sub_county");
+const VALID_PROPERTIES = [
+  "first_name",
+  "last_name",
+  "email",
+  "p_number",
+  "username",
+  "pasword",
+];
+const hasRequiredProperties = hasProperties(
+  "first_name",
+  "last_name",
+  "email",
+  "p_number",
+  "username",
+  "pasword"
+);
 function hasOnlyValidProperties(req, res, next) {
   const { data = {} } = req.body;
 
@@ -68,7 +82,6 @@ module.exports = {
   update: [
     asyncErrorBoundary(landlordExists),
     hasOnlyValidProperties,
-    hasRequiredProperties,
     asyncErrorBoundary(update),
   ],
   destroy: [asyncErrorBoundary(landlordExists), asyncErrorBoundary(destroy)],
