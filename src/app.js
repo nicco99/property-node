@@ -3,14 +3,45 @@ const app = express();
 const morgan = require("morgan");
 const propertiesRouter = require("./properties/properties.router");
 const landlordsRouter = require("./landlords/landlords.router");
-var cors = require('cors')
+const landlordsLoginRouter = require("./landlords/landlordsLogin.router");
+const cors = require("cors");
+const jwt = require("jsonwebtoken");
 
- 
-app.use(cors())
+function authorize(req, res, next) {
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "Please login" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded; // Attach the decoded user information to the request object
+    next();
+  } catch (error) {
+    return res.status(403).json({ message: "Invalid token" });
+  }
+}
+
+app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 app.use("/properties", propertiesRouter);
-app.use("/landlords", landlordsRouter);
+// app.use("/landlords", authorize, landlordsRouter);
+app.use(
+  "/landlords",
+  (req, res, next) => {
+    if (req.method === "POST") {
+      // Skip authorization middleware for create route
+      next();
+    } else {
+      authorize(req, res, next);
+    }
+  },
+  landlordsRouter
+);
+
+app.use("/landlord_login", landlordsLoginRouter);
 
 // Not found handler
 app.use((req, res, next) => {

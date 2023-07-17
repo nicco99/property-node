@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const landlordsService = require("./landlords.service");
 const hasProperties = require("../errors/hasProperties");
 
@@ -45,11 +46,26 @@ async function landlordExists(req, res, next) {
   next({ status: 404, message: "landlord not found" });
 }
 
-function create(req, res, next) {
-  landlordsService
-    .create(req.body)
-    .then((data) => res.status(201).json({ data }))
-    .catch(next);
+async function create(req, res, next) {
+  const { pasword, ...userData } = req.body;
+
+  try {
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(pasword, 10);
+
+    // Create the user with the hashed password
+    const user = {
+      ...userData,
+      pasword: hashedPassword,
+    };
+
+    // Call the service to create the user
+    const createdUser = await landlordsService.create(user);
+
+    res.status(201).json({ data: createdUser });
+  } catch (error) {
+    next(error);
+  }
 }
 
 async function read(req, res, next) {
