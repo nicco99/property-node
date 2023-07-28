@@ -3,6 +3,7 @@ const app = express();
 const morgan = require("morgan");
 const propertiesRouter = require("./properties/properties.router");
 const landlordsRouter = require("./landlords/landlords.router");
+const contactsRouter = require("./contacts/contacts.router");
 const landlordsLoginRouter = require("./landlords/landlordsLogin.router");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
@@ -42,7 +43,7 @@ app.use(
 );
 
 app.use("/landlord_login", landlordsLoginRouter);
-
+app.use("/contact", contactsRouter);
 // Not found handler
 app.use((req, res, next) => {
   next({ status: 404, message: `Not found: ${req.originalUrl}` });
