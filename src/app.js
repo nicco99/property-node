@@ -9,10 +9,10 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 
 function authorize(req, res, next) {
-  const token = req.headers.Authorization?.split(" ")[1];
-console.log(req.headers)
+  const token = req.headers.authorization?.split(" ")[1];
+
   if (!token) {
-    return res.status(401).json(req.headers);
+    return res.status(401).json({ message: "Invalid token" });
   }
 
   try {
