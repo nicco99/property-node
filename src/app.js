@@ -27,8 +27,15 @@ function authorize(req, res, next) {
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
-app.use("/properties", propertiesRouter);
-// app.use("/landlords", authorize, landlordsRouter);
+
+app.use(
+  "/properties",
+  (req, res, next) => {
+    authorize(req, res, next);
+  },
+  propertiesRouter
+);
+
 app.use(
   "/landlords",
   (req, res, next) => {
