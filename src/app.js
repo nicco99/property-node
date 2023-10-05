@@ -9,14 +9,14 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 
 function authorize(req, res, next) {
-  const token = req.headers.authorization?.split(" ")[1];
+  const token = req.headers.Authorization?.split(" ")[1];
 
   if (!token) {
     return res.status(401).json({ message: "Please login" });
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, "3ecret");
     req.user = decoded; // Attach the decoded user information to the request object
     next();
   } catch (error) {
