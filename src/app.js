@@ -10,9 +10,9 @@ const jwt = require("jsonwebtoken");
 
 function authorize(req, res, next) {
   const token = req.headers.Authorization?.split(" ")[1];
-
+console.log(req.headers)
   if (!token) {
-    return res.status(401).json({ message: "Please login" });
+    return res.status(401).json(req.headers);
   }
 
   try {
