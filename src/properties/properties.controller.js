@@ -4,8 +4,14 @@ const hasProperties = require("../errors/hasProperties");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 const VALID_PROPERTIES = ["name", "county", "sub_county"];
-const hasRequiredProperties = hasProperties("name", "county", "sub_county",);
-
+const hasRequiredProperties = hasProperties(
+  "name",
+  "county",
+  "town",
+  "neighbourhood",
+  "amenities",
+  "rent_duration"
+);
 
 function hasOnlyValidProperties(req, res, next) {
   const { data = {} } = req.body;
