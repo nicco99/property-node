@@ -15,9 +15,8 @@ async function create(req, res, next) {
       const isPasswordMatch = await bcrypt.compare(pasword, landlord.pasword);
       if (isPasswordMatch) {
         // Passwords match
-        const token = jwt.sign({ id: landlord.id }, "3ecret", {
-          expiresIn: "1h", // Set token expiration time
-        });
+        const token = jwt.sign({ id: landlord.id }, "3ecret");
+
         res.json({ token: token, landlord: landlord });
       } else {
         // Passwords do not match
