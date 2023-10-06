@@ -7,7 +7,6 @@ const VALID_PROPERTIES = ["name", "county", "sub_county"];
 const hasRequiredProperties = hasProperties(
   "name",
   "county",
-  "town",
   "neighbourhood",
   "amenities",
   "rent_duration"
